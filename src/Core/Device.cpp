@@ -10,7 +10,7 @@
 
 namespace WackyEngine
 {
-    const std::vector<const char*> Device::RequiredExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+    const std::vector<const char*> Device::RequiredExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME, "VK_EXT_descriptor_indexing" };
 
     QueueFamilyIndices Device::LocateQueueFamilies(VkPhysicalDevice device)
     {
@@ -155,6 +155,10 @@ namespace WackyEngine
         // Extra Features to Enabled
         VkPhysicalDeviceFeatures deviceFeatures { };
         deviceFeatures.samplerAnisotropy = VK_TRUE;
+        
+        VkPhysicalDeviceRobustness2FeaturesEXT deviceRobustnessFeatures { };
+        deviceRobustnessFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ROBUSTNESS_2_FEATURES_EXT;
+        deviceRobustnessFeatures.nullDescriptor = VK_TRUE;
 
         // Logical Device Creation
         VkDeviceCreateInfo info { };
@@ -164,6 +168,7 @@ namespace WackyEngine
         info.pEnabledFeatures = &deviceFeatures;
         info.enabledExtensionCount = static_cast<std::uint32_t>(RequiredExtensions.size());
         info.ppEnabledExtensionNames = RequiredExtensions.data();
+        info.pNext = &deviceRobustnessFeatures;
 
         if (vkCreateDevice(m_PhysicalDevice, &info, nullptr, &m_LogicalDevice) != VK_SUCCESS)
         {

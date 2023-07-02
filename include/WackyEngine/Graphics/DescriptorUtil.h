@@ -43,8 +43,8 @@ namespace WackyEngine
     public:
         DescriptorWriter(VkDescriptorSet destinationSet) : m_DestinationSet(destinationSet) { }
 
-        DescriptorWriter& WriteBuffer(std::uint32_t binding, VkDescriptorType type, VkDescriptorBufferInfo* bufferInfo);
-        DescriptorWriter& WriteImage(std::uint32_t binding, VkDescriptorType type, VkDescriptorImageInfo* imageInfo);
+        DescriptorWriter& WriteBuffer(std::uint32_t binding, std::uint32_t count, VkDescriptorType type, VkDescriptorBufferInfo* bufferInfo);
+        DescriptorWriter& WriteImage(std::uint32_t binding, std::uint32_t count, VkDescriptorType type, VkDescriptorImageInfo* imageInfo);
 
         void Write();
     };

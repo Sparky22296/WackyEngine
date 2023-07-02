@@ -14,10 +14,19 @@
 
 namespace WackyEngine
 {
+    struct FrameData
+    {
+        VkCommandBuffer CmdBuffer;
+        std::uint32_t FrameIndex;
+    };
+
     class Application
     {
     private:
         RenderSystem* m_RenderSystem;
+
+    protected:
+        inline RenderSystem* GetRenderSystem() { return m_RenderSystem; }
 
     public:
         Application(const int width, const int height, const std::string& windowTitle);
@@ -25,11 +34,10 @@ namespace WackyEngine
 
         void Run();
 
-        void OnWindowResize(GLFWwindow* window, int width, int height);
-
-        // virtual void Initialise() = 0;
-        // virtual void Update() = 0;
-        // virtual void Draw() = 0;
+        virtual void Initialise() = 0;
+        virtual void Update() = 0;
+        virtual void Draw(const FrameData& frameData) = 0;
+        virtual void OnWindowResize(int newWidth, int newHeight) { }
     };
 }
 

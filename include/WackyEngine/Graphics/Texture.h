@@ -13,19 +13,12 @@ namespace WackyEngine
         VkImageView m_TextureImageView;
         VkImage m_TextureImage;
         VkDeviceMemory m_TextureImageMemory;
-        VkSampler m_TextureSampler;
-
-        void InitialiseSampler();
 
     public:
-        Texture() { }
-        ~Texture() { }
-
-        void Initialise(const std::string& fileName);
-        void Destroy();
+        Texture(const std::string& fileName);
+        ~Texture();
 
         inline VkImageView GetImageView() const noexcept { return m_TextureImageView; }
-        inline VkSampler GetSampler() const noexcept { return m_TextureSampler; }
     };
 }
 

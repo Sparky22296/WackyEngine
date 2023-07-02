@@ -45,15 +45,14 @@ namespace WackyEngine
     {
         m_RenderSystem->SetClearColour({0, 0, 0});
 
-        Renderer2D* renderer = new Renderer2D(m_RenderSystem->GetSwapRenderPass());
-        renderer->SetResolution(1280, 720);
-
-        Window::SetResizedCallback([renderer](GLFWwindow* window, int width, int height) 
+        Window::SetResizedCallback([this](GLFWwindow* window, int width, int height) 
         {
-            renderer->SetResolution(width, height);
+            OnWindowResize(width, height);
         });
 
         float lastFrameTime = 0;
+
+        Initialise();
 
         while(!Context::GetWindow()->ShouldClose())
         {
@@ -63,17 +62,18 @@ namespace WackyEngine
             Timestep timestep = time - lastFrameTime;
             lastFrameTime = time;
 
+            Update();
+
             if (VkCommandBuffer cmdBuffer = m_RenderSystem->BeginFrame())
             {
                 m_RenderSystem->BeginRenderPass(cmdBuffer);
-                renderer->Begin();
 
-                renderer->DrawRectangle(Rectangle(0, 0, 50, 50), Vector3(1.0f, 0.4f, 0.1f));
-                renderer->DrawRectangle(Rectangle(100, 100, 50, 50), Vector3(0.2f, 0.8f, 0.2f));
-                renderer->DrawRectangle(Rectangle(78, 150, 80, 150), Vector3(0.2f, 0.8f, 0.9f));
-                renderer->DrawRectangle(Rectangle(900, 450, 200, 200), Vector3(0.3f, 0.1f, 0.6f));
+                FrameData data;
+                data.CmdBuffer = cmdBuffer;
+                data.FrameIndex = m_RenderSystem->GetCurrentIndex();
 
-                renderer->End(cmdBuffer, m_RenderSystem->GetCurrentIndex());
+                Draw(data);
+
                 m_RenderSystem->EndRenderPass(cmdBuffer);
                 m_RenderSystem->EndFrame();
             }
@@ -82,7 +82,5 @@ namespace WackyEngine
         // Cleaning Up
 
         vkDeviceWaitIdle(Context::GetDevice()->GetLogicalDevice());
-
-        delete renderer;
     }
 }

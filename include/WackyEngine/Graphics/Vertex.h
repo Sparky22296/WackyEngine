@@ -15,8 +15,9 @@ namespace WackyEngine
         Vector3 Position;
         Vector3 Colour;
         Vector2 TextureCoordinates;
+        std::uint32_t TextureIndex;
 
-        Vertex(Vector3 position, Vector3 colour, Vector2 textCoords) : Position(position), Colour(colour), TextureCoordinates(textCoords) { }
+        Vertex(Vector3 position, Vector3 colour, Vector2 texCoords, std::uint32_t texIndex) : Position(position), Colour(colour), TextureCoordinates(texCoords), TextureIndex(texIndex) { }
         Vertex() { }
 
         static std::vector<VkVertexInputBindingDescription> GetBindingDescriptions() 
@@ -32,7 +33,7 @@ namespace WackyEngine
 
         static std::vector<VkVertexInputAttributeDescription> GetAttributeDescriptions()
         {
-            std::vector<VkVertexInputAttributeDescription> attributes(3);
+            std::vector<VkVertexInputAttributeDescription> attributes(4);
 
             attributes[0].binding = 0;
             attributes[0].location = 0;
@@ -48,6 +49,11 @@ namespace WackyEngine
             attributes[2].location = 2;
             attributes[2].format = VK_FORMAT_R32G32_SFLOAT;
             attributes[2].offset = offsetof(Vertex, TextureCoordinates);
+
+            attributes[3].binding = 0;
+            attributes[3].location = 3;
+            attributes[3].format = VK_FORMAT_R32_SINT;
+            attributes[3].offset = offsetof(Vertex, TextureIndex);
 
             return attributes;
         }

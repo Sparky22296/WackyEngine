@@ -12,7 +12,6 @@ namespace WackyEngine
     Pipeline::Pipeline(const PipelineConfig& config)
     {
         // Initialising Shader Modules
-
         VkShaderModule vertexShaderModule = CreateShaderModule("shaders/shader.vert.spv");
         VkShaderModule fragmentShaderModule = CreateShaderModule("shaders/shader.frag.spv");
 

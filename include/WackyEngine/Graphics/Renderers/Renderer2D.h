@@ -18,6 +18,12 @@ namespace WackyEngine
             Matrix4 ProjectionMatrix;
         };
 
+        struct PC
+        {
+            std::uint32_t TextureIndex, test1, test2, test3;
+        };
+
+        const std::size_t MAX_TEXTURES = 8;
         const std::size_t MAX_QUADS = 10000;
         const std::size_t MAX_VERTICES = MAX_QUADS * 4;
         const std::size_t MAX_INDICES = MAX_QUADS * 6;
@@ -31,14 +37,16 @@ namespace WackyEngine
         std::vector<VkDescriptorSet> m_GlobalDescriptorSets;
 
         // Buffers
-
         VertexBuffer* m_VertexBuffer;
         IndexBuffer* m_IndexBuffer;
         std::vector<Buffer*> m_UniformBuffers;
+        std::vector<Texture*> m_TextureBuffer;
+        VkSampler m_Sampler;
 
         void InitialisePipelineLayout();
         void InitialisePipeline(const RenderPass* renderPass);
         void InitialiseDescriptors();
+        void InitialiseSampler();
         void InitialiseUniformBuffers();
 
     public:
@@ -48,7 +56,7 @@ namespace WackyEngine
         void Begin();
         void End(VkCommandBuffer cmdBuffer, const std::uint32_t currentIndex);
 
-        void DrawRectangle(const Rectangle& rect, const Vector3& colour);
+        void DrawRectangle(const Rectangle& rect, const Vector3& colour, Texture* texture);
 
         void SetResolution(const std::uint32_t width, const std::uint32_t height);
     };

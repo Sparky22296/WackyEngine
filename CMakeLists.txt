@@ -8,7 +8,7 @@ find_package(Vulkan REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
 
 set(SRC_FILES
-    src/Main.cpp
+    # src/Main.cpp
     src/Application.cpp
 
     src/Core/Window.cpp
@@ -23,7 +23,7 @@ set(SRC_FILES
     src/Graphics/RenderPass.cpp
     src/Graphics/DescriptorUtil.cpp
     src/Graphics/GraphicsBuffers.cpp
-    src/Graphics/Model.cpp
+    # src/Graphics/Model.cpp
     src/Graphics/Texture.cpp
     
     src/Graphics/Renderers/Renderer2D.cpp
@@ -36,6 +36,6 @@ set(SRC_FILES
     src/Math/Rectangle.cpp
 )
 
-add_executable(WackyEngine ${SRC_FILES})
+add_library(WackyEngine STATIC ${SRC_FILES})
 target_include_directories(WackyEngine PRIVATE include "${GLFW_INCLUDE_DIRS}" "${Vulkan_INCLUDE_DIRS}")
 target_link_libraries(WackyEngine PRIVATE "${Vulkan_LIBRARIES}" glfw)

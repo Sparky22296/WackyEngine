@@ -11,7 +11,7 @@
 
 namespace WackyEngine
 {
-    void Texture::Initialise(const std::string &fileName)
+    Texture::Texture(const std::string &fileName)
     {
         int width, height, channels;
         stbi_uc* pixels = stbi_load(fileName.c_str(), &width, &height, &channels, STBI_rgb_alpha);
@@ -61,44 +61,44 @@ namespace WackyEngine
             throw std::runtime_error("Failed to create image view.");
         }
 
-        InitialiseSampler();
+        // InitialiseSampler();
     }
 
-    void Texture::Destroy()
+    Texture::~Texture()
     {
-        vkDestroySampler(Context::GetDevice()->GetLogicalDevice(), m_TextureSampler, nullptr);
+        // vkDestroySampler(Context::GetDevice()->GetLogicalDevice(), m_TextureSampler, nullptr);
         vkDestroyImageView(Context::GetDevice()->GetLogicalDevice(), m_TextureImageView, nullptr);
         vkDestroyImage(Context::GetDevice()->GetLogicalDevice(), m_TextureImage, nullptr);
         vkFreeMemory(Context::GetDevice()->GetLogicalDevice(), m_TextureImageMemory, nullptr);
     }
     
-    void Texture::InitialiseSampler()
-    {
-        VkSamplerCreateInfo info { };
-        info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-        info.magFilter = VK_FILTER_LINEAR;
-        info.minFilter = VK_FILTER_LINEAR;
-        info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        info.anisotropyEnable = VK_TRUE;
+    // void Texture::InitialiseSampler()
+    // {
+    //     VkSamplerCreateInfo info { };
+    //     info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+    //     info.magFilter = VK_FILTER_LINEAR;
+    //     info.minFilter = VK_FILTER_LINEAR;
+    //     info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    //     info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    //     info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    //     info.anisotropyEnable = VK_TRUE;
 
-        VkPhysicalDeviceProperties properties { };
-        vkGetPhysicalDeviceProperties(Context::GetDevice()->GetPhysicalDevice(), &properties);
+    //     VkPhysicalDeviceProperties properties { };
+    //     vkGetPhysicalDeviceProperties(Context::GetDevice()->GetPhysicalDevice(), &properties);
 
-        info.maxAnisotropy = properties.limits.maxSamplerAnisotropy;
-        info.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
-        info.unnormalizedCoordinates = VK_FALSE;
-        info.compareEnable = VK_FALSE;
-        info.compareOp = VK_COMPARE_OP_ALWAYS;
-        info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
-        info.mipLodBias = 0.0f;
-        info.minLod = 0.0f;
-        info.maxLod = 0.0f;
+    //     info.maxAnisotropy = properties.limits.maxSamplerAnisotropy;
+    //     info.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+    //     info.unnormalizedCoordinates = VK_FALSE;
+    //     info.compareEnable = VK_FALSE;
+    //     info.compareOp = VK_COMPARE_OP_ALWAYS;
+    //     info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+    //     info.mipLodBias = 0.0f;
+    //     info.minLod = 0.0f;
+    //     info.maxLod = 0.0f;
 
-        if (vkCreateSampler(Context::GetDevice()->GetLogicalDevice(), &info, nullptr, &m_TextureSampler) != VK_SUCCESS)
-        {
-            throw std::runtime_error("Failed to create texture sampler.");
-        }
-    }
+    //     if (vkCreateSampler(Context::GetDevice()->GetLogicalDevice(), &info, nullptr, &m_TextureSampler) != VK_SUCCESS)
+    //     {
+    //         throw std::runtime_error("Failed to create texture sampler.");
+    //     }
+    // }
 }

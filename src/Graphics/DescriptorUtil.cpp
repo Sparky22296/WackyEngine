@@ -70,7 +70,7 @@ namespace WackyEngine
 
     // Descriptor Writer
 
-    DescriptorWriter& DescriptorWriter::WriteBuffer(std::uint32_t binding, VkDescriptorType type, VkDescriptorBufferInfo* bufferInfo)
+    DescriptorWriter& DescriptorWriter::WriteBuffer(std::uint32_t binding, std::uint32_t count, VkDescriptorType type, VkDescriptorBufferInfo* bufferInfo)
     {
         VkWriteDescriptorSet write { };
         write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -78,7 +78,7 @@ namespace WackyEngine
         write.dstBinding = binding;
         write.dstArrayElement = 0;
         write.descriptorType = type;
-        write.descriptorCount = 1;
+        write.descriptorCount = count;
         write.pBufferInfo = bufferInfo;
 
         m_DescriptorWrites.push_back(write);
@@ -86,7 +86,7 @@ namespace WackyEngine
         return *this;
     }
 
-    DescriptorWriter& DescriptorWriter::WriteImage(std::uint32_t binding, VkDescriptorType type, VkDescriptorImageInfo* imageInfo)
+    DescriptorWriter& DescriptorWriter::WriteImage(std::uint32_t binding, std::uint32_t count, VkDescriptorType type, VkDescriptorImageInfo* imageInfo)
     {
         VkWriteDescriptorSet write { };
         write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -94,7 +94,7 @@ namespace WackyEngine
         write.dstBinding = binding;
         write.dstArrayElement = 0;
         write.descriptorType = type;
-        write.descriptorCount = 1;
+        write.descriptorCount = count;
         write.pImageInfo = imageInfo;
 
         m_DescriptorWrites.push_back(write);
